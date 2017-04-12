@@ -1,0 +1,60 @@
+#Check Bullet Intersection with Blocker
+	k,i = 0,0
+	hit_bullet = []
+	hit_blocker = []
+
+	for bullets in bullet:
+		for blocks in block:
+			if intersect(bullets.x,bullets.y,blocks.x,blocks.y,BLOCKERHEIGHT,BLOCKERWIDTH):
+				hit_blocker.append(i)
+				hit_bullet.append(k)		
+			i += 1
+		k += 1	
+
+	hit_bullet = list(set(hit_bullet))
+	hit_blocker = list(set(hit_blocker))
+
+	for i in hit_blocker:
+		del(block[i])
+
+	for i in hit_bullet:
+		del(bullet[i])
+
+
+##Initialize Blocker
+blocker_x = X_MARGIN + 50
+blocker_y = (DISPLAYHEIGHT-Y_MARGIN-150)
+block = []
+
+#Left Blocker 
+for row in range(10):
+	for coloumn in range(10):
+		block.append(Blocker(blocker_x + coloumn*BLOCKERGAP,blocker_y))
+	blocker_y += BLOCKERHEIGHT
+
+#Center Blocker
+blocker_x = (DISPLAYWIDTH-X_MARGIN)/2 - 50
+blocker_y = (DISPLAYHEIGHT-Y_MARGIN-150)
+for row in range(10):
+	for coloumn in range(10):
+		block.append(Blocker(blocker_x + coloumn*BLOCKERGAP,blocker_y))
+	blocker_y += BLOCKERHEIGHT
+
+#Right Blocker
+blocker_x = (DISPLAYWIDTH-X_MARGIN) - 200
+blocker_y = (DISPLAYHEIGHT-Y_MARGIN-150)
+for row in range(10):
+	for coloumn in range(10):
+		block.append(Blocker(blocker_x + coloumn*BLOCKERGAP,blocker_y))
+	blocker_y += BLOCKERHEIGHT
+print(len(block))
+
+class Blocker:
+	def __init__(self,posx,posy,color = BLOCKERCOLOR,size=(BLOCKERWIDTH,BLOCKERHEIGHT)):
+		self.x = posx
+		self.y = posy
+		self.color = color
+		self.width = size[0]
+		self.height = size[1]
+	def render(self):
+		pygame.draw.rect(Display,self.color,[self.x,self.y,self.height,self.width])
